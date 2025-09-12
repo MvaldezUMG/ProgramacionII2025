@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Clase</string>
+    <string name="login_screen_text">Iniciar sesión</string>
+    <string name="login_screen_login_button">Iniciar sesión</string>
+    <string name="login_screen_register_button">No tienes cuenta ?, crea una acá</string>
+
+    <string name="register_screen_text">Crea tu cuenta</string>
+    <string name="register_screen_register_button">Crear cuenta</string>
+
+    <string name="fields_email">Correo electrónico</string>
+    <string name="fields_password">Contraseña</string>
+    <string name="fields_confirm_password">Confirmar contraseña</string>
+</resources>
