@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">clase7</string>
+    <string name="register_screen_text">Registro</string>
+    <string name="fields_email">Correo electrónico</string>
+    <string name="fields_password">Contraseña</string>
+    <string name="fields_confirm_password">Confirmar contraseña</string>
+    <string name="register_screen_register_button">Registrarse</string>
+    <string name="login_screen_text">Iniciar Sesion</string>
+    <string name="login_screen_login_button">Ingresar</string>
+    <string name="login_screen_register_button">Registrarse</string>
+</resources>

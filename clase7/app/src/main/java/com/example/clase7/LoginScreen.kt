@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -39,7 +38,7 @@ import com.google.firebase.auth.auth
 
 @Preview
 @Composable
-fun LoginScreen(innerPadding: PaddingValues = PaddingValues()){
+fun LoginScreen(){
 
     val auth = Firebase.auth
 
@@ -100,11 +99,10 @@ fun LoginScreen(innerPadding: PaddingValues = PaddingValues()){
                 auth.signInWithEmailAndPassword(stateEmail, statePassword)
                     .addOnCompleteListener (activity) {
                         task ->
-                        if (task.isSuccessful){
-                            stateMessage = "Inicio de session correcto"
-                        }
-                        else {
-                            stateMessage = "Fallo el inicio de sesion"
+                        stateMessage = if (task.isSuccessful){
+                            "Inicio de session correcto"
+                        } else {
+                            "Fallo el inicio de sesion"
                         }
                     }
             },

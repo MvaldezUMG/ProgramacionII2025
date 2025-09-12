@@ -70,8 +70,6 @@ captures/
 .gradle/
 local.properties
 *.log
-*.xml
-*.json
 
 # Android generated files
 gen/

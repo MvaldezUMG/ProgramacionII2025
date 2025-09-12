@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
 
             Clase7Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    LoginScreen(innerPadding)
+                    LoginScreen()
                 }
             }
         }
