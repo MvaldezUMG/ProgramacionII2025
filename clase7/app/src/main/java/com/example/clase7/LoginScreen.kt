@@ -2,10 +2,8 @@ package com.example.clase7
 
 import android.app.Activity
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -31,15 +29,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
-@Preview
 @Composable
-fun LoginScreen(){
+fun LoginScreen(navController: NavController){
 
     val auth = Firebase.auth
 
@@ -100,7 +97,8 @@ fun LoginScreen(){
                     .addOnCompleteListener (activity) {
                         task ->
                         stateMessage = if (task.isSuccessful){
-                            "Inicio de session correcto"
+                            navController.navigate("logSuccess")
+                            ""
                         } else {
                             "Fallo el inicio de sesion"
                         }
@@ -113,7 +111,7 @@ fun LoginScreen(){
             text = stateMessage
         )
         Button(
-            onClick = {},
+            onClick = {navController.navigate("register")},
             colors =ButtonDefaults.buttonColors(
                 containerColor = Color.White,
                 contentColor = Color.Blue

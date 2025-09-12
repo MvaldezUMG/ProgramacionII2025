@@ -14,4 +14,5 @@
 
     <string name="login_screen_success">Inicio de session correcto</string>
     <string name="login_screen_fail">Fallo el inicio de sesion</string>
+
 </resources>
