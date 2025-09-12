@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -85,7 +86,7 @@ fun RegisterScreen(navController: NavController){
                 text = stringResource(R.string.register_screen_text),
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.Blue
+                color = Color(0xFF0066B3)
             )
             Spacer(
                 modifier = Modifier.height(20.dp)
@@ -145,6 +146,11 @@ fun RegisterScreen(navController: NavController){
                         Toast.makeText(activity,"Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
                     }
                 },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFC9252B),
+                    contentColor = Color.White
+                )
+
             ){
                 Text(stringResource(R.string.register_screen_register_button) )
             }

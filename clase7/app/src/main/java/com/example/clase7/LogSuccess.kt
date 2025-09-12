@@ -25,6 +25,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.unit.dp
+
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,19 +54,31 @@ fun SuccessScreen(navController: NavController){
             )
         }
     ){ innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding))
+        Box(modifier = Modifier
+            .padding(innerPadding)
+            .fillMaxSize()
+        )
+
         Column(
             modifier = Modifier
                 .padding(4.dp)
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement =Arrangement.Center
-        ){
+        )
+        {
+        Image(
+            painter = painterResource(R.drawable.umglogo),
+            contentDescription = null,
+            modifier = Modifier
+                .size(120.dp),
+            contentScale = ContentScale.Crop
+        )
             Text(
                 text = stringResource(R.string.login_screen_success),
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.Blue
+                color = Color(0xFF0066B3)
             )
         }
     }
