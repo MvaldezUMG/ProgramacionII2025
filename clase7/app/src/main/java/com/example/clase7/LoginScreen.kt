@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material3.CheckboxDefaults.colors
 import androidx.navigation.NavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -54,7 +55,7 @@ fun LoginScreen(navController: NavController){
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement =Arrangement.Center
     ){
-        //TODO: Buscar como agregar imagenes como recursos
+
         Image(
             imageVector = Icons.Filled.Person,
             contentDescription = "User icon",
@@ -64,7 +65,7 @@ fun LoginScreen(navController: NavController){
             text = stringResource(R.string.login_screen_text),
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.Blue
+            color = Color(0xFF0066B3)
         )
         Spacer(modifier = Modifier.height(10.dp))
         OutlinedTextField(
@@ -103,7 +104,12 @@ fun LoginScreen(navController: NavController){
                             "Fallo el inicio de sesion"
                         }
                     }
+
             },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFC9252B),
+                contentColor = Color.White
+            )
         ){
             Text(stringResource(R.string.login_screen_login_button) )
         }
@@ -113,8 +119,8 @@ fun LoginScreen(navController: NavController){
         Button(
             onClick = {navController.navigate("register")},
             colors =ButtonDefaults.buttonColors(
-                containerColor = Color.White,
-                contentColor = Color.Blue
+                containerColor = Color(0xFFEAB1A7),
+                contentColor = Color.White
             )
         ){
             Text(stringResource(R.string.login_screen_register_button))
