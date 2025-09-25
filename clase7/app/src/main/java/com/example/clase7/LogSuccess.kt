@@ -51,7 +51,7 @@ fun SuccessScreen(navController: NavController){
                     IconButton(onClick = {navController.popBackStack()}){
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-                            contentDescription= "icon register"
+                            contentDescription= stringResource(R.string.content_description_icon_exit)
                         )
                     }
                 }
@@ -87,7 +87,7 @@ fun SuccessScreen(navController: NavController){
             Button(onClick={
                 navController.navigate(context.getString(R.string.screen4))
             }, modifier = Modifier.padding(10.dp)){
-                Text("Ir a usuarios")
+                Text(stringResource(R.string.login_screen_to_users))
             }
         }
     }

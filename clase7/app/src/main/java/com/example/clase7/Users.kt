@@ -83,7 +83,7 @@ fun UserScreen(navController: NavController) {
                     IconButton(onClick = {navController.popBackStack()}){
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-                            contentDescription= "icon register"
+                            contentDescription= stringResource(R.string.content_description_icon_exit)
                         )
                     }
                 }
@@ -96,7 +96,7 @@ fun UserScreen(navController: NavController) {
         )
         {
             Button(onClick = {navController.navigate(context.getString(R.string.screen5))}){
-                Text("Nuevo usuario")
+                Text(stringResource(R.string.user_screen_new_user))
             }
             Spacer(modifier = Modifier.padding(3.dp))
             if (isLoading){

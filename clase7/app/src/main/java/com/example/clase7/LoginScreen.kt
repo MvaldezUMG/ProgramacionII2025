@@ -68,7 +68,7 @@ fun LoginScreen(navController: NavController){
 
         Image(
             imageVector = Icons.Filled.Person,
-            contentDescription = "User icon",
+            contentDescription = stringResource(R.string.content_description_icon_person),
             modifier = Modifier.size(150.dp)
         )
         Text(
@@ -83,7 +83,7 @@ fun LoginScreen(navController: NavController){
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Filled.Email,
-                    contentDescription = "email icon"
+                    contentDescription = stringResource(R.string.content_description_icon_email)
                 )
             },
             onValueChange = {stateEmail = it},
@@ -103,7 +103,7 @@ fun LoginScreen(navController: NavController){
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Filled.Lock,
-                    contentDescription = "password icon"
+                    contentDescription = stringResource(R.string.content_description_icon_password)
                 )
             },
             onValueChange = {statePassword = it},
@@ -139,7 +139,7 @@ fun LoginScreen(navController: NavController){
                                 navController.navigate(context.getString(R.string.screen3))
                                 context.getString(R.string.placeholder_text)
                             } else {
-                                "Fallo el inicio de sesion"
+                                context.getString(R.string.login_screen_fail)
                             }
                         }
                 }else {

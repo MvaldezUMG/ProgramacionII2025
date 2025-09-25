@@ -80,7 +80,7 @@ fun UsersFormScreen(navController: NavController){
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Filled.Email,
-                    contentDescription = "email icon"
+                    contentDescription = stringResource(R.string.content_description_icon_email)
                 )
             },
             onValueChange = {stateEmail = it},
@@ -100,7 +100,7 @@ fun UsersFormScreen(navController: NavController){
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Filled.Email,
-                    contentDescription = "email icon"
+                    contentDescription = stringResource(R.string.content_description_icon_email)
                 )
             },
             onValueChange = {stateRoles = it},
@@ -126,13 +126,13 @@ fun UsersFormScreen(navController: NavController){
                 contentColor = Color.White
             )
         ){
-            Text("Guardar")
+            Text(stringResource(R.string.user_form_screen_save))
         }
 
         IconButton(onClick = {navController.popBackStack()}){
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-                contentDescription= "icon register"
+                contentDescription= stringResource(R.string.content_description_icon_exit)
             )
         }
 
