@@ -95,6 +95,7 @@ fun UserScreen(navController: NavController) {
         {
 
             Spacer(modifier = Modifier.padding(8.dp))
+            Text(stringResource(R.string.user_screen_tittle))
             if (isLoading){
                 CircularProgressIndicator()
             }

@@ -61,6 +61,7 @@ fun UsersFormScreen(navController: NavController){
 
 
         Spacer(modifier = Modifier.height(10.dp))
+        Text(stringResource(R.string.user_screen_new_user))
         OutlinedTextField(
             value = stateEmail,
             leadingIcon = {
