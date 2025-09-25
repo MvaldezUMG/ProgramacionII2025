@@ -20,6 +20,7 @@
     <string name="login_screen_to_users">Ir a usuarios</string>
 
     <string name="user_screen_new_user">Nuevo usuario</string>
+    <string name="user_screen_tittle">Usuarios</string>
 
     <string name="user_form_screen_save">Guardar</string>
 
@@ -41,5 +42,6 @@
     <string name="content_description_icon_email">Email icon</string>
     <string name="content_description_icon_password">Password icon</string>
     <string name="content_description_icon_confirm_password">Confirm password icon</string>
+    <string name="content_description_icon_add">Add icon</string>
 
 </resources>
