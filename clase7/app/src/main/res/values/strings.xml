@@ -3,6 +3,7 @@
     <string name="app_name">Clase</string>
     <string name="login_screen_text">Iniciar sesión</string>
     <string name="login_screen_login_button">Iniciar sesión</string>
+    <string name="placeholder_text"> "" </string>
     <string name="login_screen_register_button">No tienes cuenta ? crea una acá</string>
 
     <string name="register_screen_text">Crea tu cuenta</string>
@@ -14,6 +15,13 @@
 
     <string name="login_screen_success">Inicio de sesion correcto</string>
     <string name="login_screen_fail">Fallo el inicio de sesion</string>
+
+    <string name="screen1">login</string>
+    <string name="screen2">register</string>
+    <string name="screen3">logSuccess</string>
+    <string name="screen4">users</string>
+    <string name="screen5">users_form</string>
+
     <string name="login_screen_validation_email_empty">El correo es requerido</string>
 
     <string name="user_form_screen_email">Email</string>

@@ -34,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material3.CheckboxDefaults.colors
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.navigation.NavController
@@ -42,6 +43,8 @@ import com.google.firebase.auth.auth
 
 @Composable
 fun LoginScreen(navController: NavController){
+
+    val context = LocalContext.current
 
     val auth = Firebase.auth
 
@@ -133,8 +136,8 @@ fun LoginScreen(navController: NavController){
                         .addOnCompleteListener (activity) {
                                 task ->
                             stateMessage = if (task.isSuccessful){
-                                navController.navigate("logSuccess")
-                                ""
+                                navController.navigate(context.getString(R.string.screen3))
+                                context.getString(R.string.placeholder_text)
                             } else {
                                 "Fallo el inicio de sesion"
                             }
@@ -157,7 +160,7 @@ fun LoginScreen(navController: NavController){
             text = stateMessage
         )
         Button(
-            onClick = {navController.navigate("register")},
+            onClick = {navController.navigate(context.getString(R.string.screen2))},
             colors =ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFEAB1A7),
                 contentColor = Color.White

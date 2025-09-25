@@ -32,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -46,6 +47,7 @@ import com.google.firebase.auth.auth
 //@Preview
 @Composable
 fun RegisterScreen(navController: NavController){
+    val context = LocalContext.current
     val auth = Firebase.auth
 
     var stateEmail by remember {mutableStateOf("")}

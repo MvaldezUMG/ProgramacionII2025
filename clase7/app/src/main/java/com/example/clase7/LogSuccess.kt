@@ -32,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 
 
@@ -40,6 +41,8 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SuccessScreen(navController: NavController){
+    val context = LocalContext.current
+
     Scaffold (
         topBar = {
             TopAppBar(
@@ -82,7 +85,7 @@ fun SuccessScreen(navController: NavController){
                 color = Color(0xFF0066B3)
             )
             Button(onClick={
-                navController.navigate("users")
+                navController.navigate(context.getString(R.string.screen4))
             }, modifier = Modifier.padding(10.dp)){
                 Text("Ir a usuarios")
             }

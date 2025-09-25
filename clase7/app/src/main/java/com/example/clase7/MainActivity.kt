@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -42,23 +44,26 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreens() {
+
+    val context = LocalContext.current
+
     val navController = rememberNavController()
 
-    var initialScreen: String = "login"
+    var initialScreen: String = stringResource(R.string.screen1)
 
     val auth = Firebase.auth
     val currentUser = auth.currentUser
 
     if (currentUser != null){
-        initialScreen = "logSuccess"
+        initialScreen = stringResource(R.string.screen1)
     }
 
     NavHost(navController = navController, startDestination = initialScreen) {
-        composable("login") { LoginScreen(navController) }
-        composable("register") { RegisterScreen(navController) }
-        composable("logSuccess") { SuccessScreen(navController) }
-        composable("users") {UserScreen(navController)}
-        composable("users_form"){UsersFormScreen(navController)}
+        composable(context.getString(R.string.screen1)) { LoginScreen(navController) }
+        composable(context.getString(R.string.screen2)) { RegisterScreen(navController) }
+        composable(context.getString(R.string.screen3)) { SuccessScreen(navController) }
+        composable(context.getString(R.string.screen4)) {UserScreen(navController)}
+        composable(context.getString(R.string.screen5)) {UsersFormScreen(navController)}
     }
 }
 

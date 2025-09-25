@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material3.CheckboxDefaults.colors
 import androidx.compose.material3.IconButton
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.navigation.NavController
@@ -45,17 +46,17 @@ import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 
-fun saveUser(db: FirebaseFirestore, user: User, navController: NavController) {
-    db.collection(USERS_COLLECTION)
-        .add(user)
-        .addOnSuccessListener { documentReference ->
-            navController.navigate("users")
-        }
-}
-
 @Composable
 fun UsersFormScreen(navController: NavController){
 
+    val context = LocalContext.current
+    fun saveUser(db: FirebaseFirestore, user: User, navController: NavController) {
+        db.collection(USERS_COLLECTION)
+            .add(user)
+            .addOnSuccessListener { documentReference ->
+                navController.navigate(context.getString(R.string.screen4))
+            }
+    }
     var stateEmail by remember {mutableStateOf("")}
     var stateRoles by remember {mutableStateOf("")}
 
