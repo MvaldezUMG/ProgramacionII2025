@@ -105,14 +105,7 @@ fun UserScreen(navController: NavController) {
 
         )
         {
-            IconButton(onClick = {navController.navigate(context.getString(R.string.screen5))}){
-                Icon(
-                    imageVector = Icons.Filled.Add,
-                    contentDescription= stringResource(R.string.content_description_icon_add),
-                    modifier = Modifier.size(50.dp),
 
-                )
-            }
             Spacer(modifier = Modifier.padding(8.dp))
             if (isLoading){
                 CircularProgressIndicator()
@@ -140,6 +133,23 @@ fun UserScreen(navController: NavController) {
                             }
                         }
                     }
+                }
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
+                    .padding(16.dp)
+            )
+            {
+             IconButton(onClick = {navController.navigate(context.getString(R.string.screen5))})
+                {
+                  Icon(
+                     imageVector = Icons.Filled.Add,
+                        contentDescription = stringResource(R.string.content_description_icon_add),
+                        modifier = Modifier.size(50.dp),
+
+                      )
                 }
             }
         }
