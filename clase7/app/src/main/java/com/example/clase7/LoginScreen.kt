@@ -125,8 +125,8 @@ fun LoginScreen(navController: NavController){
         Spacer(modifier = Modifier.height(10.dp))
         Button(
             onClick = {
-                val emailValidation = validateEmail(stateEmail)
-                val passwordValidation = validatePassword(statePassword)
+                val emailValidation = validateEmail(stateEmail, context)
+                val passwordValidation = validatePassword(statePassword, context)
 
                 emailMessage = emailValidation.second
                 passwordMessage = passwordValidation.second

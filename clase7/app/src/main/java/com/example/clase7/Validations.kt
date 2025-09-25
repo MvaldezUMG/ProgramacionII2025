@@ -1,19 +1,20 @@
 package com.example.clase7
 
+import android.content.Context
 import android.util.Patterns
 
-fun validateEmail (value: String): Pair<Boolean, String> {
+fun validateEmail (value: String, context: Context): Pair<Boolean, String> {
     return when {
-        value.isEmpty() -> Pair(false, "El email es requerido")
-        !Patterns.EMAIL_ADDRESS.matcher(value).matches() -> Pair(false, "El email es invalido")
+        value.isEmpty() -> Pair(false, context.getString(R.string.login_screen_validation_email_empty))
+        !Patterns.EMAIL_ADDRESS.matcher(value).matches() -> Pair(false, context.getString(R.string.login_screen_validation_email_invalid))
         else -> Pair(true, "")
     }
 }
 
-fun validatePassword(value: String): Pair<Boolean, String> {
+fun validatePassword(value: String, context: Context): Pair<Boolean, String> {
     return when {
-        value.isEmpty() -> Pair(false, "El password es requerido")
-        value.length < 6 -> Pair(false, "El password debe tener al menos 6 caracteres")
+        value.isEmpty() -> Pair(false, context.getString(R.string.login_screen_validation_password_empty))
+        value.length < 6 -> Pair(false, context.getString(R.string.login_screen_validation_password_invalid))
         else -> Pair(true, "")
     }
 }
