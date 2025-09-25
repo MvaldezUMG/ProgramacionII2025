@@ -12,7 +12,10 @@
     <string name="fields_password">Contraseña</string>
     <string name="fields_confirm_password">Confirmar contraseña</string>
 
-    <string name="login_screen_success">Inicio de session correcto</string>
+    <string name="login_screen_success">Inicio de sesion correcto</string>
     <string name="login_screen_fail">Fallo el inicio de sesion</string>
+    <string name="login_screen_validation_email_empty">El correo es requerido</string>
+
+    <string name="user_form_screen_email">Email</string>
 
 </resources>

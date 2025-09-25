@@ -31,6 +31,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.ui.unit.dp
 
 
@@ -80,6 +81,11 @@ fun SuccessScreen(navController: NavController){
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF0066B3)
             )
+            Button(onClick={
+                navController.navigate("users")
+            }, modifier = Modifier.padding(10.dp)){
+                Text("Ir a usuarios")
+            }
         }
     }
 }

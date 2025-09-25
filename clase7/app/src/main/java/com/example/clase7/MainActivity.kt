@@ -14,7 +14,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.clase7.ui.theme.Clase7Theme
+import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.auth
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,10 +44,21 @@ class MainActivity : ComponentActivity() {
 fun MainScreens() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "login") {
+    var initialScreen: String = "login"
+
+    val auth = Firebase.auth
+    val currentUser = auth.currentUser
+
+    if (currentUser != null){
+        initialScreen = "logSuccess"
+    }
+
+    NavHost(navController = navController, startDestination = initialScreen) {
         composable("login") { LoginScreen(navController) }
         composable("register") { RegisterScreen(navController) }
         composable("logSuccess") { SuccessScreen(navController) }
+        composable("users") {UserScreen(navController)}
+        composable("users_form"){UsersFormScreen(navController)}
     }
 }
 
