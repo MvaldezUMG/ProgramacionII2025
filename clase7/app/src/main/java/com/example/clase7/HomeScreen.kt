@@ -34,7 +34,7 @@ import com.google.firebase.auth.auth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SuccessScreen(navController: NavController){
+fun HomeScreen(navController: NavController){
     val context = LocalContext.current
 
     val auth = Firebase.auth

@@ -11,7 +11,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -42,6 +41,12 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+const val SCREEN_LOGIN = "login"
+const val SCREEN_REGISTER = "register"
+const val SCREEN_HOME = "home"
+const val SCREEN_USERS = "users"
+const val SCREEN_USERS_FORM = "users_form"
+
 @Composable
 fun MainScreens() {
 
@@ -49,21 +54,21 @@ fun MainScreens() {
 
     val navController = rememberNavController()
 
-    var initialScreen: String = stringResource(R.string.screen_login)
+    var initialScreen: String = SCREEN_LOGIN
 
     val auth = Firebase.auth
     val currentUser = auth.currentUser
 
     if (currentUser != null){
-        initialScreen = stringResource(R.string.screen_log_success)
+        initialScreen = SCREEN_HOME
     }
 
     NavHost(navController = navController, startDestination = initialScreen) {
-        composable(context.getString(R.string.screen_login)) { LoginScreen(navController) }
-        composable(context.getString(R.string.screen_register)) { RegisterScreen(navController) }
-        composable(context.getString(R.string.screen_log_success)) { SuccessScreen(navController) }
-        composable(context.getString(R.string.screen_users)) {UserScreen(navController)}
-        composable(context.getString(R.string.screen_users_form)) {UsersFormScreen(navController)}
+        composable(SCREEN_LOGIN) { LoginScreen(navController) }
+        composable(SCREEN_REGISTER) { RegisterScreen(navController) }
+        composable(SCREEN_HOME) { HomeScreen(navController) }
+        composable(SCREEN_USERS) {UserScreen(navController)}
+        composable(SCREEN_USERS_FORM) {UsersFormScreen(navController)}
     }
 }
 

@@ -35,9 +35,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.clase7.data.UsersRepository
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import com.example.clase7.models.User
@@ -45,32 +47,20 @@ import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 
-
-const val USERS_COLLECTION = "users"
-
-suspend fun getUsers (db: FirebaseFirestore) : List<User> {
-    val snapshot = db.collection(USERS_COLLECTION)
-        .get()
-        .await()
-
-    val usersList = snapshot.documents.map{doc ->
-        doc.toObject<User>()?.copy(id = doc.id, email = doc.get("email").toString(), doc.get("roles").toString())
-          ?: User()
-    }
-    return usersList
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserScreen(navController: NavController) {
     val context = LocalContext.current
-    val db = Firebase.firestore
+    val activity = LocalView.current.context as Activity
+    val repository = UsersRepository(activity.resources)
+
+
     var users by remember {mutableStateOf(emptyList<User>())}
     var isLoading by remember {mutableStateOf(false)}
 
     LaunchedEffect(Unit) {
         isLoading = true
-        users = getUsers(db)
+        users = repository.getUsers()
         isLoading = false
     }
 

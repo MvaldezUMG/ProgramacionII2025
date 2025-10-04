@@ -34,6 +34,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import com.example.clase7.data.UsersRepository
 import com.example.clase7.models.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -47,13 +48,7 @@ fun UsersFormScreen(navController: NavController){
     val auth = Firebase.auth
 
     val context = LocalContext.current
-    fun saveUser(db: FirebaseFirestore, user: User, navController: NavController) {
-        db.collection(USERS_COLLECTION)
-            .add(user)
-            .addOnSuccessListener { documentReference ->
-                navController.navigate(context.getString(R.string.screen_users))
-            }
-    }
+
     var stateEmail by remember {mutableStateOf("")}
     var stateRoles by remember {mutableStateOf("")}
 
@@ -61,7 +56,7 @@ fun UsersFormScreen(navController: NavController){
 
     var selectedOptions = remember {mutableStateListOf<String>()}
 
-    val db = Firebase.firestore
+    val repository = UsersRepository(context.resources)
 
 
     Column(
@@ -129,24 +124,7 @@ fun UsersFormScreen(navController: NavController){
             onClick = {
                 val roles = selectedOptions.joinToString(",")
                 val user = User("", stateEmail, roles)
-                saveUser(db, user, navController)
-
-                auth.createUserWithEmailAndPassword()
-
-                auth.createUserWithEmailAndPassword(stateEmail, statePassword)
-                    .addOnCompleteListener(activity) { task ->
-                        if (task.isSuccessful) {
-                            Toast.makeText(activity, context.getString(R.string.register_screen_success), Toast.LENGTH_SHORT)
-                                .show()
-                        } else {
-                            Toast.makeText(
-                                activity,
-                                "Error: ${task.exception?.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-
+                repository.saveUser(user, navController)
 
             },
             colors = ButtonDefaults.buttonColors(
