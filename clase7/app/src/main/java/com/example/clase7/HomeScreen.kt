@@ -34,7 +34,7 @@ import com.google.firebase.auth.auth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SuccessScreen(navController: NavController){
+fun HomeScreen(navController: NavController){
     val context = LocalContext.current
 
     val auth = Firebase.auth
@@ -83,7 +83,7 @@ fun SuccessScreen(navController: NavController){
                 color = Color(0xFF0066B3)
             )
             Button(onClick={
-                navController.navigate(context.getString(R.string.screen_users))
+                navController.navigate(SCREEN_USERS)
             }, modifier = Modifier.padding(10.dp)){
                 Text(stringResource(R.string.login_screen_to_users))
             }

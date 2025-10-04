@@ -133,7 +133,7 @@ fun LoginScreen(navController: NavController){
                         .addOnCompleteListener (activity) {
                                 task ->
                             stateMessage = if (task.isSuccessful){
-                                navController.navigate(context.getString(R.string.screen_log_success))
+                                navController.navigate(SCREEN_HOME)
                                 context.getString(R.string.placeholder_text)
                             } else {
                                 context.getString(R.string.login_screen_fail)

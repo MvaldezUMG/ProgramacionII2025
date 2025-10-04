@@ -12,9 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.clase7.ui.theme.Clase7Theme
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
@@ -42,6 +44,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+const val SCREEN_USER_FORM = "users_form"
+const val SCREEN_USERS= "users"
+const val SCREEN_HOME= "home"
+
 @Composable
 fun MainScreens() {
 
@@ -55,15 +61,20 @@ fun MainScreens() {
     val currentUser = auth.currentUser
 
     if (currentUser != null){
-        initialScreen = stringResource(R.string.screen_log_success)
+        initialScreen = SCREEN_HOME
     }
 
     NavHost(navController = navController, startDestination = initialScreen) {
         composable(context.getString(R.string.screen_login)) { LoginScreen(navController) }
         composable(context.getString(R.string.screen_register)) { RegisterScreen(navController) }
-        composable(context.getString(R.string.screen_log_success)) { SuccessScreen(navController) }
-        composable(context.getString(R.string.screen_users)) {UserScreen(navController)}
-        composable(context.getString(R.string.screen_users_form)) {UsersFormScreen(navController)}
+        composable(SCREEN_HOME) { HomeScreen(navController) }
+        composable(SCREEN_USERS) {UserScreen(navController)}
+        composable(SCREEN_USER_FORM) {UsersFormScreen(navController)}
+        composable("$SCREEN_USER_FORM/{userId}?",
+                      arguments = listOf(navArgument("userId"){ type = NavType.StringType})
+            ) {backStackEntry ->
+                val userId = backStackEntry.arguments?.getString("userId") ?: ""
+                UsersFormScreen(navController, userId)}
     }
 }
 

@@ -1,5 +1,6 @@
 package com.example.clase7
 
+import android.app.Activity
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -31,38 +33,51 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.navigation.NavController
+import com.example.clase7.data.UsersRepository
 import com.example.clase7.models.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
 
 @Composable
-fun UsersFormScreen(navController: NavController){
+fun UsersFormScreen(navController: NavController, userId : String? = ""){
+
+    val context = LocalContext.current
+    val repository = UsersRepository(context.resources)
 
     val roles = listOf("coordinator", "teacher")
     val auth = Firebase.auth
 
-    val context = LocalContext.current
-    fun saveUser(db: FirebaseFirestore, user: User, navController: NavController) {
-        db.collection(USERS_COLLECTION)
-            .add(user)
-            .addOnSuccessListener { documentReference ->
-                navController.navigate(context.getString(R.string.screen_users))
-            }
-    }
+    val activity = LocalView.current.context as Activity
+
     var stateEmail by remember {mutableStateOf("")}
     var stateRoles by remember {mutableStateOf("")}
-
     var stateMessage by remember {mutableStateOf("")}
+    val selectedOptions = remember {mutableStateListOf<String>()}
 
-    var selectedOptions = remember {mutableStateListOf<String>()}
+    var isLoading by remember {mutableStateOf(false)}
 
-    val db = Firebase.firestore
-
+    LaunchedEffect(Unit) {
+        if (userId != null && userId != ""){
+            isLoading = true
+            val currentUser = repository.getUserById(userId)
+            if (currentUser != null){
+                stateEmail = currentUser.email
+                val roles = currentUser.roles.split(",")
+                for (rol in roles) {
+                    if (rol == ""){
+                        continue
+                    }
+                    selectedOptions.add(rol)
+                }
+            }
+            isLoading = false
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -72,7 +87,10 @@ fun UsersFormScreen(navController: NavController){
         verticalArrangement =Arrangement.Center
     ){
 
-
+        if (isLoading){
+            CircularProgressIndicator()
+            return@Column
+        }
         Spacer(modifier = Modifier.height(10.dp))
         Text(stringResource(R.string.user_screen_new_user))
         OutlinedTextField(
@@ -106,7 +124,9 @@ fun UsersFormScreen(navController: NavController){
                                if (selectedOptions.contains(option)) {
                                    selectedOptions.remove(option)
                                } else {
-                                   selectedOptions.add(option)
+                                   if (option != ""){
+                                       selectedOptions.add(option)
+                                   }
                                }
                            }
                        ).padding(horizontal = 16.dp),
@@ -128,24 +148,27 @@ fun UsersFormScreen(navController: NavController){
         Button(
             onClick = {
                 val roles = selectedOptions.joinToString(",")
-                val user = User("", stateEmail, roles)
-                saveUser(db, user, navController)
+                val user = User(userId?:"", stateEmail, roles)
+                repository.saveUser(user, navController)
 
-                auth.createUserWithEmailAndPassword()
+                //val defaultPassword = context.getString(R.string.user_form_screen_def_pass)
 
-                auth.createUserWithEmailAndPassword(stateEmail, statePassword)
-                    .addOnCompleteListener(activity) { task ->
-                        if (task.isSuccessful) {
-                            Toast.makeText(activity, context.getString(R.string.register_screen_success), Toast.LENGTH_SHORT)
-                                .show()
-                        } else {
-                            Toast.makeText(
-                                activity,
-                                "Error: ${task.exception?.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
+//                auth.createUserWithEmailAndPassword(stateEmail, defaultPassword)
+//                    .addOnCompleteListener(activity) { task ->
+//                        if (task.isSuccessful) {
+//                            auth.sendPasswordResetEmail(stateEmail)
+//                                .addOnCompleteListener(activity) {
+//                                    Toast.makeText(activity, context.getString(R.string.register_screen_success), Toast.LENGTH_SHORT)
+//                                        .show()
+//                                }
+//                        } else {
+//                            Toast.makeText(
+//                                activity,
+//                                "Error: ${task.exception?.message}",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                        }
+//                    }
 
 
             },

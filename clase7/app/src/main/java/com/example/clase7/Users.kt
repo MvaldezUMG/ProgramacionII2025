@@ -38,6 +38,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.clase7.data.UsersRepository
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import com.example.clase7.models.User
@@ -46,31 +47,20 @@ import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 
 
-const val USERS_COLLECTION = "users"
-
-suspend fun getUsers (db: FirebaseFirestore) : List<User> {
-    val snapshot = db.collection(USERS_COLLECTION)
-        .get()
-        .await()
-
-    val usersList = snapshot.documents.map{doc ->
-        doc.toObject<User>()?.copy(id = doc.id, email = doc.get("email").toString(), doc.get("roles").toString())
-          ?: User()
-    }
-    return usersList
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserScreen(navController: NavController) {
+
     val context = LocalContext.current
-    val db = Firebase.firestore
+    val usersRepository = UsersRepository(context.resources)
+
     var users by remember {mutableStateOf(emptyList<User>())}
     var isLoading by remember {mutableStateOf(false)}
 
     LaunchedEffect(Unit) {
         isLoading = true
-        users = getUsers(db)
+        users = usersRepository.getUsers()
         isLoading = false
     }
 
@@ -112,7 +102,7 @@ fun UserScreen(navController: NavController) {
                                     .fillMaxWidth()
                                     .clickable(onClick= {
                                         navController
-                                            .navigate(context.getString(R.string.screen_users_form))
+                                            .navigate(SCREEN_USER_FORM + "/" + user.id)
                                     })
                                 ,
                                 elevation = CardDefaults.cardElevation(4.dp)
@@ -139,7 +129,7 @@ fun UserScreen(navController: NavController) {
                     .padding(16.dp)
             )
             {
-             IconButton(onClick = {navController.navigate(context.getString(R.string.screen_users_form))})
+             IconButton(onClick = {navController.navigate(SCREEN_USER_FORM)})
                 {
                   Icon(
                      imageVector = Icons.Filled.Add,
