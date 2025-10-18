@@ -1,6 +1,8 @@
 package com.example.clase7
 
-import android.widget.Toast
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +18,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -31,15 +34,39 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.clase7.data.UsersRepository
+import com.example.clase7.data.view_models.FileUploadViewModel
+import com.example.clase7.data.view_models.UploadState
 import com.example.clase7.models.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
+
+fun getFileNameFromUri(context: android.content.Context, uri: Uri): String? {
+    return when (uri.scheme) {
+        "content" -> {
+            context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val displayNameIndex = cursor.getColumnIndex("_display_name")
+                    if (displayNameIndex != -1) {
+                        cursor.getString(displayNameIndex)
+                    } else {
+                        "file_${System.currentTimeMillis()}"
+                    }
+                } else {
+                    "file_${System.currentTimeMillis()}"
+                }
+            }
+        }
+        "file" -> uri.lastPathSegment
+        else -> "file_${System.currentTimeMillis()}"
+    }
+}
 
 @Composable
 fun UsersFormScreen(navController: NavController){
@@ -57,6 +84,22 @@ fun UsersFormScreen(navController: NavController){
     var selectedOptions = remember {mutableStateListOf<String>()}
 
     val repository = UsersRepository(context.resources)
+
+    val viewModel = viewModel<FileUploadViewModel>()
+
+    val uploadState by viewModel.uploadState.collectAsState()
+    val uploadedFiles by viewModel.uploadedFiles.collectAsState()
+
+
+    val filePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let {
+            // Obtener nombre del archivo desde el URI
+            val fileName = getFileNameFromUri(context, uri)
+            viewModel.uploadFile(context, uri, fileName)
+        }
+    }
 
 
     Column(
@@ -119,6 +162,48 @@ fun UsersFormScreen(navController: NavController){
                 }
             }
         }
+        Spacer(modifier = Modifier.height(10.dp))
+        Button(
+            onClick = {
+                filePickerLauncher.launch("*/*")
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFC9252B),
+                contentColor = Color.White
+            )
+        ){
+            Text(stringResource(R.string.user_form_screen_upload))
+        }
+
+        when (val state = uploadState) {
+            is UploadState.Loading -> {
+                CircularProgressIndicator()
+                Text("Subiendo archivo...")
+            }
+            is UploadState.Success -> {
+                Text(
+                    text = "Archivo subido exitosamente: ${state.file.name}",
+                    color = MaterialTheme.colorScheme.primary
+                )
+
+                LaunchedEffect(state) {
+                    kotlinx.coroutines.delay(2000)
+                    viewModel.resetState()
+                }
+            }
+            is UploadState.Error -> {
+                Text(
+                    text = "Error: ${state.message}",
+                    color = MaterialTheme.colorScheme.error
+                )
+
+                Button(onClick = { viewModel.resetState() }) {
+                    Text("Reintentar")
+                }
+            }
+            else -> {}
+        }
+
         Spacer(modifier = Modifier.height(10.dp))
         Button(
             onClick = {

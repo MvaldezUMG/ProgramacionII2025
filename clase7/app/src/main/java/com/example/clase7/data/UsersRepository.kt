@@ -25,6 +25,21 @@ class UsersRepository(private val resources: Resources) {
             }
     }
 
+    suspend fun getUserByEmail( email: String) : User?{
+        val snapshot = db.collection(USERS_COLLECTION)
+            .whereEqualTo("email", email)
+            .get()
+            .await()
+
+        if (snapshot.documents.count() == 0){
+            return null
+        }
+        val document = snapshot.documents[0]
+        val user = User(document.get("id").toString(), document.get("email").toString(),
+                        document.get("roles").toString())
+        return user
+    }
+
     suspend fun getUsers () : List<User> {
         val snapshot = db.collection(USERS_COLLECTION)
             .get()

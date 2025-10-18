@@ -23,6 +23,8 @@
     <string name="user_screen_tittle">Usuarios</string>
 
     <string name="user_form_screen_save">Guardar</string>
+    <string name="user_form_screen_upload">Foto</string>
+
 
     <string name="screen_login">login</string>
     <string name="screen_register">register</string>
@@ -43,5 +45,6 @@
     <string name="content_description_icon_password">Password icon</string>
     <string name="content_description_icon_confirm_password">Confirm password icon</string>
     <string name="content_description_icon_add">Add icon</string>
+    <string name="register_screen_register_not_allowed">Registro no permitido\n</string>
 
 </resources>

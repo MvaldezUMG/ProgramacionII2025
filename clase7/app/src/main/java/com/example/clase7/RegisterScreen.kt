@@ -28,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,8 +40,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.clase7.data.UsersRepository
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,13 +51,17 @@ import com.google.firebase.auth.auth
 @Composable
 fun RegisterScreen(navController: NavController){
     val context = LocalContext.current
+    val activity = LocalView.current.context as Activity
     val auth = Firebase.auth
+
+    val usersRepository = UsersRepository(activity.resources)
 
     var stateEmail by remember {mutableStateOf("")}
     var statePassword by remember {mutableStateOf("")}
     var stateConfirmPassword by remember {mutableStateOf("")}
 
-    val activity = LocalView.current.context as Activity
+
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold (
         topBar = {
@@ -130,22 +137,38 @@ fun RegisterScreen(navController: NavController){
             )
             Button(
                 onClick = {
-                    if (statePassword == stateConfirmPassword) {
-                        auth.createUserWithEmailAndPassword(stateEmail, statePassword)
-                            .addOnCompleteListener(activity) { task ->
-                                if (task.isSuccessful) {
-                                    Toast.makeText(activity, context.getString(R.string.register_screen_success), Toast.LENGTH_SHORT)
-                                        .show()
-                                } else {
-                                    Toast.makeText(
-                                        activity,
-                                        "Error: ${task.exception?.message}",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
+
+                    coroutineScope.launch {
+                        try {
+                            val user = usersRepository.getUserByEmail(stateEmail)
+                            if (user == null){
+                                Toast.makeText(activity,
+                                    context.getString(R.string.register_screen_register_not_allowed),
+                                    Toast.LENGTH_SHORT).show()
+                                return@launch
                             }
-                    }else{
-                        Toast.makeText(activity, context.getString(R.string.register_screen_password_error), Toast.LENGTH_SHORT).show()
+                            if (statePassword == stateConfirmPassword) {
+                                auth.createUserWithEmailAndPassword(stateEmail, statePassword)
+                                    .addOnCompleteListener(activity) { task ->
+                                        if (task.isSuccessful) {
+                                            Toast.makeText(activity, context.getString(R.string.register_screen_success), Toast.LENGTH_SHORT)
+                                                .show()
+                                        } else {
+                                            Toast.makeText(
+                                                activity,
+                                                "Error: ${task.exception?.message}",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    }
+                            }else{
+                                Toast.makeText(activity, context.getString(R.string.register_screen_password_error), Toast.LENGTH_SHORT).show()
+                            }
+
+                        }catch(e:Exception){
+                            Toast.makeText(activity, "ERROR:" + e.message, Toast.LENGTH_SHORT).show()
+                        }
+
                     }
                 },
                 colors = ButtonDefaults.buttonColors(

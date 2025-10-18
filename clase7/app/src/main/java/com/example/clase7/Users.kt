@@ -4,6 +4,7 @@ package com.example.clase7
 import android.app.Activity
 import android.widget.Toast
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Add
@@ -82,7 +85,7 @@ fun UserScreen(navController: NavController) {
         Column(modifier = Modifier
             .padding(innerPadding)
             .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
 
         )
         {
@@ -93,7 +96,7 @@ fun UserScreen(navController: NavController) {
                 CircularProgressIndicator()
             }
             else{
-                LazyColumn{
+                LazyColumn(){
                     for (user in users){
                         item(user.id){
                             Card(
